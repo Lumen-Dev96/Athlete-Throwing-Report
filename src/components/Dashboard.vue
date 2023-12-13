@@ -1,5 +1,5 @@
 <script setup>
-import { ClockCircleFilled, EnvironmentFilled, EyeFilled } from '@ant-design/icons-vue';
+import { ClockCircleFilled, EnvironmentFilled, EyeFilled, PlaySquareFilled } from '@ant-design/icons-vue';
 import { ref, onMounted, onBeforeUnmount } from 'vue'
 import moment from 'moment'
 import IconAngle from './icons/IconAngle.vue';
@@ -22,12 +22,36 @@ const nextResultBtnDisabled = ref(false);
 const threeDSenceBtnActive = ref(true);
 const twoDSenceBtnActive = ref(false);
 
+const threeDSenceVideosIsPlaying = ref(false);
+const twoDSenceVideosIsPlaying = ref(false);
+const seatVideoIsPlaying = ref(false);
+
+let twoDSenceVideo1;
+let twoDSenceVideo2;
+let twoDSenceVideo3;
+let threeDSenceVideo1;
+let threeDSenceVideo2;
+let threeDSenceVideo3;
+let seatVideo;
+
 
 onMounted(() => {
   timer = setInterval(() => {
     //设置定时器
     getTime(); //自定义事件
   }, 1000);
+
+  twoDSenceVideo1 = document.getElementById('twoDSenceVideo1');
+  twoDSenceVideo2 = document.getElementById('twoDSenceVideo2');
+  twoDSenceVideo3 = document.getElementById('twoDSenceVideo3');
+
+  threeDSenceVideo1 = document.getElementById('threeDSenceVideo1');
+  threeDSenceVideo2 = document.getElementById('threeDSenceVideo2');
+  threeDSenceVideo3 = document.getElementById('threeDSenceVideo3');
+
+  seatVideo = document.getElementById('seatVideo');
+
+
 });
 
 onBeforeUnmount(() => {
@@ -67,6 +91,48 @@ function handleSwitch2DSence(event) {
   twoDSenceBtnActive.value = true;
 }
 
+function handle2DSenceVideoPlay(event) {
+  if (twoDSenceVideosIsPlaying.value) {
+    console.log('pause');
+    twoDSenceVideosIsPlaying.value = false;
+    twoDSenceVideo1.pause();
+    twoDSenceVideo2.pause();
+    twoDSenceVideo3.pause();
+  } else {
+    console.log('play');
+    twoDSenceVideosIsPlaying.value = true;
+    twoDSenceVideo1.play();
+    twoDSenceVideo2.play();
+    twoDSenceVideo3.play();
+  }
+}
+
+function handle3DSenceVideoPlay(event) {
+  if (threeDSenceVideosIsPlaying.value) {
+    console.log('pause');
+    threeDSenceVideosIsPlaying.value = false;
+    threeDSenceVideo1.pause();
+    threeDSenceVideo2.pause();
+    threeDSenceVideo3.pause();
+  } else {
+    console.log('play');
+    threeDSenceVideosIsPlaying.value = true;
+    threeDSenceVideo1.play();
+    threeDSenceVideo2.play();
+    threeDSenceVideo3.play();
+  }
+}
+
+function handleSeatVideoPlay(event) {
+  if (seatVideoIsPlaying.value) {
+    seatVideoIsPlaying.value = false;
+    seatVideo.pause();
+  } else {
+    seatVideoIsPlaying.value = true;
+    seatVideo.play();
+  }
+}
+
 </script>
 
 <template>
@@ -103,7 +169,7 @@ function handleSwitch2DSence(event) {
 
         <div class="p-3 bg-white row-span-6 col-span-4 shadow-sm">
           <div class="font-bold text-center">場景展示</div>
-          <div class="flex mx-auto justify-center gap-8 mt-2">
+          <div class="flex mx-auto justify-center gap-8 my-2">
             <div
               class="text-center text-[#a0a0a0] rounded-full px-2 py-0.5 cursor-pointer sence-btn"
               :class="{ active: twoDSenceBtnActive }"
@@ -119,14 +185,31 @@ function handleSwitch2DSence(event) {
               • 三維場景
             </div>
           </div>
-          <div class="">
+          <div v-show="threeDSenceBtnActive" class="relative cursor-pointer" @click="handle3DSenceVideoPlay">
             <div class="flex justify-center">
-              <video class="max-h-[20vh] w-[50%]" muted src="@/assets/2/arm_body_2.mp4"></video>
-              <video class="max-h-[20vh] w-[50%]" muted src="@/assets/2/arm_body_2.mp4"></video>
+              <video id="threeDSenceVideo1" class="max-h-[20vh] w-[50%]" muted src="@/assets/2/arm_body_2.mp4"></video>
+              <video id="threeDSenceVideo2" class="max-h-[20vh] w-[50%]" muted src="@/assets/2/arm_body_2.mp4"></video>
             </div>
             <div>
-              <video class="max-h-[20vh] w-full" muted src="@/assets/2/arm_body_2.mp4"></video>
+              <video id="threeDSenceVideo3" class="max-h-[20vh] w-full" muted src="@/assets/2/arm_body_2.mp4"></video>
             </div>
+            <div class="absolute -translate-y-1/2 -translate-x-1/2 top-1/2 left-1/2 text-5xl cursor-pointer flex text-white rounded-lg z-10">
+              <PlaySquareFilled />
+            </div>
+            <div v-show="!threeDSenceVideosIsPlaying" class="absolute top-0 w-full h-full bg-black/[0.5]"></div>
+          </div>
+          <div v-show="twoDSenceBtnActive" class="relative cursor-pointer" @click="handle2DSenceVideoPlay">
+            <div class="flex justify-center">
+              <video id="twoDSenceVideo1" class="max-h-[20vh] w-[50%]" muted src="@/assets/2/arm_body_3.mp4"></video>
+              <video id="twoDSenceVideo2" class="max-h-[20vh] w-[50%]" muted src="@/assets/2/arm_body_3.mp4"></video>
+            </div>
+            <div>
+              <video id="twoDSenceVideo3" class="max-h-[20vh] w-full" muted src="@/assets/2/arm_body_3.mp4"></video>
+            </div>
+            <div class="absolute -translate-y-1/2 -translate-x-1/2 top-1/2 left-1/2 text-5xl cursor-pointer flex text-white rounded-lg z-10">
+              <PlaySquareFilled />
+            </div>
+            <div v-show="!twoDSenceVideosIsPlaying" class="absolute top-0 w-full h-full bg-black/[0.5]"></div>
           </div>
         </div>
 
@@ -200,8 +283,14 @@ function handleSwitch2DSence(event) {
         </div>
         <div class="p-3 bg-white row-span-3 col-span-1 shadow-sm">
           <div class="font-bold text-center mb-2">坐墊</div>
-          <div>
-            <video src="@/assets/2/arm_body_2.mp4"></video>
+          <div class="">
+            <div class="relative cursor-pointer" @click="handleSeatVideoPlay">
+              <div class="absolute -translate-y-1/2 -translate-x-1/2 top-1/2 left-1/2 text-3xl flex text-white rounded-lg z-10">
+                <PlaySquareFilled />
+              </div>
+              <div v-show="!seatVideoIsPlaying" class="absolute top-0 w-full h-full bg-black/[0.5]"></div>
+              <video id="seatVideo" src="@/assets/2/arm_body_2.mp4"></video>
+            </div>
             <div class="bg-[#efefef] p-1">
               <div>內容內容內容內容內容內容內容內容內容內容內容內容內容內容內容內容內容內容內容內容內容內容內容內容</div>
             </div>
