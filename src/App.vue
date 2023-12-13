@@ -25,6 +25,7 @@ header {
   padding-left: calc(var(--section-gap) / 2);
   line-height: 1.5;
   max-height: 10vh;
+  height: 10vh;
   box-shadow:
   0px 0.3px 0.5px rgba(0, 0, 0, 0.01),
   0px 0.8px 1.5px rgba(0, 0, 0, 0.015),
