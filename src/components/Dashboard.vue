@@ -200,7 +200,7 @@ function getIMU(direction, order) {
 <template>
   <div class="bg-[#f6f6f6] w-full lg:h-[90vh]">
     <div class="container mx-auto py-4">
-      <div class="lg:grid grid-rows-10 grid-cols-6 grid-flow-row gap-4">
+      <div class="lg:grid grid-rows-10 grid-cols-6 grid-flow-row gap-3">
         <div class="p-3 bg-white row-span-1 col-span-1 shadow-sm">
           <div class="flex gap-2 items-center mb-1">
             <ClockCircleFilled />
@@ -280,21 +280,21 @@ function getIMU(direction, order) {
             <!-- <img class="w-[48%] max-h-[10vh]" src="@/assets/2/cushion line.png" alt="LineGraph"> -->
             <div class="w-full flex justify-between gap-3">
               <div class="flex w-[33%] h-full flex-col justify-around items-center">
-                <div class="w-full text-center">
-                  <div>大臂與小臂的角度</div>
+                <div class="w-full text-xs text-center">
+                  <div class="whitespace-nowrap">大臂與小臂的角度</div>
                   <div class="bg-[#efefef] p-1 w-full flex justify-center gap-1 items-center">
                     <IconAngle />
                     <span class="text-center font-bold">{{ angle1 }}°</span>
                   </div>
                 </div>
-                <div class="w-full text-center">
+                <div class="w-full text-xs text-center">
                   <div>大臂與軀幹冠狀面</div>
                   <div class="bg-[#efefef] p-1 w-full flex justify-center gap-1 items-center">
                     <IconAngle />
                     <span class="text-center font-bold">{{ angle2 }}°</span>
                   </div>
                 </div>
-                <div class="w-full text-center">
+                <div class="w-full text-xs text-center">
                   <div>大臂與軀幹矢狀面</div>
                   <div class="bg-[#efefef] p-1 w-full flex justify-center gap-1 items-center">
                     <IconAngle />
@@ -303,14 +303,14 @@ function getIMU(direction, order) {
                 </div>
               </div>
               <div class="flex w-[33%] h-full flex-col justify-around items-center">
-                <div class="w-full text-center">
-                  <div>軀幹與大腿的角度</div>
+                <div class="w-full text-xs text-center">
+                  <div class="whitespace-nowrap">軀幹與大腿的角度</div>
                   <div class="bg-[#efefef] p-1 w-full flex justify-center gap-1 items-center">
                     <IconAngle />
                     <span class="text-center font-bold">{{ angle4 }}°</span>
                   </div>
                 </div>
-                <div class="w-full text-center">
+                <div class="w-full text-xs text-center">
                   <div>目標距離</div>
                   <div class="bg-[#efefef] p-1 w-full flex justify-center gap-1 items-center">
                     <div class="text-center font-bold w-full">{{ distance }} 米</div>
@@ -345,11 +345,11 @@ function getIMU(direction, order) {
         <div class="p-3 bg-white row-span-3 col-span-2 shadow-sm">
           <div class="font-bold text-center mb-2">眼動數據</div>
           <div class="flex justify-between">
-            <div class="w-full">
-              <img :src="util.getAssetsFile(currentResultId, 'EyetrackerHeatmap.jpg')" alt="Eyes">
+            <div class="w-full flex justify-center flex-col">
+              <img class="max-h-[22vh]" :src="util.getAssetsFile(currentResultId, 'EyetrackerHeatmap.jpg')" alt="Eyes">
               <div class="bg-[#efefef] p-1">
                 <div class="font-bold mt-1 mb-2">HEATMAP</div>
-                <div>內容內容內容內容內容內容內容內容內容內容內容內容內容內容內容內容內容內容內容內容內容內容內容內容</div>
+                <div class="text-xs">內容內容內容內容內容內容內容內容內容內容內容內容內容內容內容內容內容內容內容內容內容內容內容內容</div>
               </div>
             </div>
             <!-- <div class="w-[40%]">
@@ -364,7 +364,7 @@ function getIMU(direction, order) {
         </div>
         <div class="p-3 bg-white row-span-3 col-span-1 shadow-sm">
           <div class="font-bold text-center mb-2">坐墊</div>
-          <div class="">
+          <div class="flex justify-center flex-col">
             <!-- <div class="relative cursor-pointer" @click="handleSeatVideoPlay">
               <div class="absolute -translate-y-1/2 -translate-x-1/2 top-1/2 left-1/2 text-3xl flex text-white rounded-lg z-10">
                 <PlaySquareFilled />
@@ -374,7 +374,7 @@ function getIMU(direction, order) {
             </div> -->
             <img :src="util.getAssetsFile(currentResultId, '1th_Line_graph.png')" alt="San">
             <div class="bg-[#efefef] p-1">
-              <div>內容內容內容內容內容內容內容內容內容內容內容內容內容內容內容內容內容內容內容內容內容內容內容內容</div>
+              <div class="text-xs">內容內容內容內容內容內容內容內容內容內容內容內容內容內容內容內容內容內容內容內容內容內容內容內容</div>
             </div>
           </div>
         </div>
@@ -382,22 +382,22 @@ function getIMU(direction, order) {
           <div class="font-bold text-center mb-2">IMU</div>
           <div class="flex justify-center flex-wrap">
             <div class="w-[50%]">
-              <img class="max-h-[13vh]" :src="getIMU('X', 1)" alt="IMU">
+              <img class="max-h-[10vh]" :src="getIMU('X', 1)" alt="IMU">
             </div>
             <div class="w-[50%]">
-              <img class="max-h-[13vh]" :src="getIMU('X', 2)" alt="IMU">
+              <img class="max-h-[10vh]" :src="getIMU('X', 2)" alt="IMU">
             </div>
             <div class="w-[50%]">
-              <img class="max-h-[13vh]" :src="getIMU('Y', 1)" alt="IMU">
+              <img class="max-h-[10vh]" :src="getIMU('Y', 1)" alt="IMU">
             </div>
             <div class="w-[50%]">
-              <img class="max-h-[13vh]" :src="getIMU('Y', 2)" alt="IMU">
+              <img class="max-h-[10vh]" :src="getIMU('Y', 2)" alt="IMU">
             </div>
             <div class="w-[50%]">
-              <img class="max-h-[13vh]" :src="getIMU('Z', 1)" alt="IMU">
+              <img class="max-h-[10vh]" :src="getIMU('Z', 1)" alt="IMU">
             </div>
             <div class="w-[50%]">
-              <img class="max-h-[13vh]" :src="getIMU('Z', 2)" alt="IMU">
+              <img class="max-h-[10vh]" :src="getIMU('Z', 2)" alt="IMU">
             </div>
           </div>
         </div>
