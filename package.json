@@ -12,8 +12,10 @@
   },
   "dependencies": {
     "@ant-design/icons-vue": "^7.0.1",
+    "axios": "^1.6.2",
     "moment": "^2.29.4",
     "vue": "^3.3.10",
+    "vue-axios": "^3.5.2",
     "vue-router": "^4.2.5"
   },
   "devDependencies": {
