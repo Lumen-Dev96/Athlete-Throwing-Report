@@ -3,7 +3,11 @@ import { ClockCircleFilled, EnvironmentFilled, EyeFilled, PlaySquareFilled } fro
 import { ref, onMounted, onBeforeUnmount } from 'vue'
 import moment from 'moment'
 import IconAngle from './icons/IconAngle.vue';
+import util from '../util/utils';
+import { inject } from 'vue'
 
+
+const axios = inject('axios');
 
 const time = ref();
 // 获取当前时间
@@ -25,6 +29,32 @@ const twoDSenceBtnActive = ref(false);
 const threeDSenceVideosIsPlaying = ref(false);
 const twoDSenceVideosIsPlaying = ref(false);
 const seatVideoIsPlaying = ref(false);
+const scatterVideoIsPlaying = ref(false);
+
+const testTime = ref();
+const isTargeted = ref();
+const angle1 = ref();
+const angle2 = ref();
+const angle3 = ref();
+const angle4 = ref();
+const distance = ref();
+
+
+const getData = () => {
+  axios
+    .get('http://localhost:3000/data')
+    .then((response) => {
+      console.log(response.data);
+      testTime.value = response.data.testTime;
+      isTargeted.value = response.data.isTargeted;
+      angle1.value = response.data.angle1;
+      angle2.value = response.data.angle2;
+      angle3.value = response.data.angle3;
+      angle4.value = response.data.angle4;
+      distance.value = response.data.distance;
+
+    });
+};
 
 let twoDSenceVideo1;
 let twoDSenceVideo2;
@@ -33,6 +63,7 @@ let threeDSenceVideo2;
 let threeDSenceVideo3;
 let threeDSenceVideo4;
 let seatVideo;
+let scatterVideo;
 
 
 onMounted(() => {
@@ -51,6 +82,9 @@ onMounted(() => {
 
   seatVideo = document.getElementById('seatVideo');
 
+  scatterVideo = document.getElementById('scatterVideo');
+
+  getData();
 
 });
 
@@ -60,13 +94,29 @@ onBeforeUnmount(() => {
 });
 
 function handleLastResultQuery(event) {
-  currentResultId.value--;
-  if (currentResultId <= 1) {
+  if (currentResultId.value <= 1) {
     // Has no last result
     lastResultBtnDisabled.value = true;
+    return ;
   }
+  currentResultId.value--;
   nextResultBtnActive.value = false;
   lastResultBtnActive.value = true;
+  _stopPlayVideos();
+}
+
+function _stopPlayVideos() {
+  twoDSenceVideo1.pause();
+  twoDSenceVideo2.pause();
+  threeDSenceVideo1.pause();
+  threeDSenceVideo2.pause();
+  threeDSenceVideo3.pause();
+  threeDSenceVideo4.pause();
+  scatterVideo.pause();
+
+  twoDSenceVideosIsPlaying.value = false;
+  threeDSenceVideosIsPlaying.value = false;
+  scatterVideoIsPlaying.value = false;
 }
 
 function handleNextResultQuery(event) {
@@ -79,6 +129,7 @@ function handleNextResultQuery(event) {
   nextResultBtnActive.value = true;
   lastResultBtnActive.value = false;
   lastResultBtnDisabled.value = false;
+  _stopPlayVideos();
 }
 
 function handleSwitch3DSence(event) {
@@ -129,6 +180,21 @@ function handleSeatVideoPlay(event) {
   }
 }
 
+function handleScatterVideoPlay(event) {
+  if (scatterVideoIsPlaying.value) {
+    scatterVideoIsPlaying.value = false;
+    scatterVideo.pause();
+  } else {
+    scatterVideoIsPlaying.value = true;
+    scatterVideo.play();
+  }
+}
+
+function getIMU(direction, order) {
+  const fileName = 'Accel_' + direction + '_of_Detector' + order + (currentResultId.value + 1) + '_vs_time.png';
+  return util.getAssetsFile(currentResultId.value, fileName);
+}
+
 </script>
 
 <template>
@@ -141,7 +207,7 @@ function handleSeatVideoPlay(event) {
             <span class="text-xs">測試時間</span>
           </div>
           <div class="bg-[#efefef] p-1 w-full text-center font-bold">
-            {{ moment().format('HH:mm:SS') }}
+            {{ testTime }}
           </div>
         </div>
         <div class="p-3 bg-white row-span-1 col-span-1 shadow-sm">
@@ -150,7 +216,7 @@ function handleSeatVideoPlay(event) {
             <span class="text-xs">是否命中目標</span>
           </div>
           <div class="bg-[#efefef] p-1 w-full text-center font-bold">
-            F/R
+            {{ isTargeted ? 'R' : 'F' }}
           </div>
         </div>
         
@@ -175,10 +241,10 @@ function handleSeatVideoPlay(event) {
           </div>
           <div v-show="threeDSenceBtnActive" class="relative cursor-pointer" @click="handle3DSenceVideoPlay">
             <div class="flex justify-center flex-wrap">
-              <video id="threeDSenceVideo1" class="max-h-[20vh] w-[50%]" muted src="@/assets/2/arm_body_2.mp4"></video>
-              <video id="threeDSenceVideo2" class="max-h-[20vh] w-[50%]" muted src="@/assets/2/arm_body_2.mp4"></video>
-              <video id="threeDSenceVideo3" class="max-h-[20vh] w-[50%]" muted src="@/assets/2/arm_body_2.mp4"></video>
-              <video id="threeDSenceVideo4" class="max-h-[20vh] w-[50%]" muted src="@/assets/2/arm_body_2.mp4"></video>
+              <video id="threeDSenceVideo1" class="max-h-[20vh] w-[50%]" muted :src="util.getAssetsFile(currentResultId, 'arm_body_1.mp4')"></video>
+              <video id="threeDSenceVideo2" class="max-h-[20vh] w-[50%]" muted :src="util.getAssetsFile(currentResultId, 'arm_body_2.mp4')"></video>
+              <video id="threeDSenceVideo3" class="max-h-[20vh] w-[50%]" muted :src="util.getAssetsFile(currentResultId, 'arm_body_3.mp4')"></video>
+              <video id="threeDSenceVideo4" class="max-h-[20vh] w-[50%]" muted :src="util.getAssetsFile(currentResultId, 'arm_body_4.mp4')"></video>
             </div>
             <div class="absolute -translate-y-1/2 -translate-x-1/2 top-1/2 left-1/2 text-5xl cursor-pointer flex text-white rounded-lg z-10">
               <PlaySquareFilled />
@@ -187,8 +253,8 @@ function handleSeatVideoPlay(event) {
           </div>
           <div v-show="twoDSenceBtnActive" class="relative cursor-pointer" @click="handle2DSenceVideoPlay">
             <div class="flex justify-center">
-              <video id="twoDSenceVideo1" class="max-h-[40vh] w-[50%]" muted src="@/assets/2/arm_body_3.mp4"></video>
-              <video id="twoDSenceVideo2" class="max-h-[40vh] w-[50%]" muted src="@/assets/2/arm_body_3.mp4"></video>
+              <video id="twoDSenceVideo1" class="max-h-[40vh] w-[50%]" muted src="@/assets/ExcelProcess/Excel 1/arm_body_1.mp4"></video>
+              <video id="twoDSenceVideo2" class="max-h-[40vh] w-[50%]" muted src="@/assets/ExcelProcess/Excel 1/arm_body_2.mp4"></video>
             </div>
             <div class="absolute -translate-y-1/2 -translate-x-1/2 top-1/2 left-1/2 text-5xl cursor-pointer flex text-white rounded-lg z-10">
               <PlaySquareFilled />
@@ -198,66 +264,74 @@ function handleSeatVideoPlay(event) {
         </div>
 
         <div class="p-3 bg-white row-span-5 col-span-2 shadow-sm">
+          
           <div class="mb-3 flex justify-center">
-            <img class="max-h-[25vh]" src="@/assets/2/001.jpg" alt="Scene">
+            <div class="relative cursor-pointer" @click="handleScatterVideoPlay">
+              <div class="flex justify-center">
+                <video id="scatterVideo" class="max-h-[40vh] w-[50%]" muted :src="util.getAssetsFile(currentResultId, '3d_scatter4.mp4')"></video>
+              </div>
+              <div v-show="!scatterVideoIsPlaying" class="absolute -translate-y-1/2 -translate-x-1/2 top-1/2 left-1/2 text-3xl cursor-pointer flex text-white rounded-lg z-10">
+                <PlaySquareFilled />
+              </div>
+              <div v-show="!scatterVideoIsPlaying" class="absolute top-0 w-full h-full bg-black/[0.5]"></div>
+            </div>
           </div>
           <div class="flex justify-between">
             <!-- <img class="w-[48%] max-h-[10vh]" src="@/assets/2/cushion line.png" alt="LineGraph"> -->
-            <div class="w-full flex justify-between">
+            <div class="w-full flex justify-between gap-3">
               <div class="flex w-[33%] h-full flex-col justify-around items-center">
-                <div>
+                <div class="w-full text-center">
                   <div>大臂與小臂的角度</div>
                   <div class="bg-[#efefef] p-1 w-full flex justify-center gap-1 items-center">
                     <IconAngle />
-                    <span class="text-center font-bold">90°</span>
+                    <span class="text-center font-bold">{{ angle1 }}°</span>
                   </div>
                 </div>
-                <div>
+                <div class="w-full text-center">
                   <div>大臂與軀幹冠狀面</div>
                   <div class="bg-[#efefef] p-1 w-full flex justify-center gap-1 items-center">
                     <IconAngle />
-                    <span class="text-center font-bold">90°</span>
+                    <span class="text-center font-bold">{{ angle2 }}°</span>
                   </div>
                 </div>
-                <div>
+                <div class="w-full text-center">
                   <div>大臂與軀幹矢狀面</div>
                   <div class="bg-[#efefef] p-1 w-full flex justify-center gap-1 items-center">
                     <IconAngle />
-                    <span class="text-center font-bold">90°</span>
+                    <span class="text-center font-bold">{{ angle3 }}°</span>
                   </div>
                 </div>
               </div>
               <div class="flex w-[33%] h-full flex-col justify-around items-center">
-                <div>
+                <div class="w-full text-center">
                   <div>軀幹與大腿的角度</div>
                   <div class="bg-[#efefef] p-1 w-full flex justify-center gap-1 items-center">
                     <IconAngle />
-                    <span class="text-center font-bold">90°</span>
+                    <span class="text-center font-bold">{{ angle4 }}°</span>
                   </div>
                 </div>
-                <div>
+                <div class="w-full text-center">
                   <div>目標距離</div>
                   <div class="bg-[#efefef] p-1 w-full flex justify-center gap-1 items-center">
-                    <IconAngle />
-                    <span class="text-center font-bold w-full">90°</span>
+                    <div class="text-center font-bold w-full">{{ distance }} 米</div>
                   </div>
                 </div>
               </div>
-              <div class="flex w-[33%] h-full flex-col justify-between items-center">
+              <div class="flex w-[33%] h-full flex-col justify-around items-center">
                 <div
-                  class="rounded-full bg-[#f0f0f0] min-w-[70%] text-center text-[#a0a0a0] py-0.5 cursor-not-allowed"
+                  class="rounded-full bg-[#f0f0f0] w-full text-center text-[#a0a0a0] py-0.5 cursor-not-allowed"
                 >
                   第 {{ currentResultId }} 次
                 </div>
                 <div
-                  class="rounded-full bg-[#f0f0f0] min-w-[70%] text-center text-[#a0a0a0] py-0.5 cursor-pointer result-query-btn"
+                  class="rounded-full bg-[#f0f0f0] w-full text-center text-[#a0a0a0] py-0.5 cursor-pointer result-query-btn"
                   :class="{ active: lastResultBtnActive, disabled: lastResultBtnDisabled }"
                   @click="handleLastResultQuery"
                 >
                   上一次
                 </div>
                 <div
-                  class="rounded-full bg-[#f0f0f0] min-w-[70%] text-center text-[#a0a0a0] py-0.5 cursor-pointer result-query-btn"
+                  class="rounded-full bg-[#f0f0f0] w-full text-center text-[#a0a0a0] py-0.5 cursor-pointer result-query-btn"
                   :class="{ active: nextResultBtnActive, disabled: nextResultBtnDisabled }"
                   @click="handleNextResultQuery"
                 >
@@ -272,7 +346,7 @@ function handleSeatVideoPlay(event) {
           <div class="font-bold text-center mb-2">眼動數據</div>
           <div class="flex justify-between">
             <div class="w-full">
-              <img src="@/assets/2/001.jpg" alt="Eyes">
+              <img :src="util.getAssetsFile(currentResultId, 'EyetrackerHeatmap.jpg')" alt="Eyes">
               <div class="bg-[#efefef] p-1">
                 <div class="font-bold mt-1 mb-2">HEATMAP</div>
                 <div>內容內容內容內容內容內容內容內容內容內容內容內容內容內容內容內容內容內容內容內容內容內容內容內容</div>
@@ -298,7 +372,7 @@ function handleSeatVideoPlay(event) {
               <div v-show="!seatVideoIsPlaying" class="absolute top-0 w-full h-full bg-black/[0.5]"></div>
               <video id="seatVideo" src="@/assets/2/arm_body_2.mp4"></video>
             </div> -->
-            <img src="@/assets/2/001.jpg" alt="San">
+            <img :src="util.getAssetsFile(currentResultId, '1th_Line_graph.png')" alt="San">
             <div class="bg-[#efefef] p-1">
               <div>內容內容內容內容內容內容內容內容內容內容內容內容內容內容內容內容內容內容內容內容內容內容內容內容</div>
             </div>
@@ -306,8 +380,25 @@ function handleSeatVideoPlay(event) {
         </div>
         <div class="p-3 bg-white row-span-3 col-span-3 shadow-sm">
           <div class="font-bold text-center mb-2">IMU</div>
-          <div class="flex justify-center">
-            <img class="max-h-[27vh]" src="@/assets/2/001.jpg" alt="San">
+          <div class="flex justify-center flex-wrap">
+            <div class="w-[50%]">
+              <img class="max-h-[13vh]" :src="getIMU('X', 1)" alt="IMU">
+            </div>
+            <div class="w-[50%]">
+              <img class="max-h-[13vh]" :src="getIMU('X', 2)" alt="IMU">
+            </div>
+            <div class="w-[50%]">
+              <img class="max-h-[13vh]" :src="getIMU('Y', 1)" alt="IMU">
+            </div>
+            <div class="w-[50%]">
+              <img class="max-h-[13vh]" :src="getIMU('Y', 2)" alt="IMU">
+            </div>
+            <div class="w-[50%]">
+              <img class="max-h-[13vh]" :src="getIMU('Z', 1)" alt="IMU">
+            </div>
+            <div class="w-[50%]">
+              <img class="max-h-[13vh]" :src="getIMU('Z', 2)" alt="IMU">
+            </div>
           </div>
         </div>
 
@@ -325,6 +416,5 @@ function handleSeatVideoPlay(event) {
 
 .result-query-btn.disabled, .sence-btn.disabled {
   cursor: not-allowed;
-  pointer-events: none;
 }
 </style>
