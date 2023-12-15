@@ -381,22 +381,22 @@ function getIMU(direction, order) {
         <div class="p-3 bg-white row-span-3 col-span-3 shadow-sm">
           <div class="font-bold text-center mb-2">IMU</div>
           <div class="flex justify-center flex-wrap">
-            <div class="w-[50%]">
+            <div class="w-[50%] flex justify-center">
               <img class="max-h-[10vh]" :src="getIMU('X', 1)" alt="IMU">
             </div>
-            <div class="w-[50%]">
+            <div class="w-[50%] flex justify-center">
               <img class="max-h-[10vh]" :src="getIMU('X', 2)" alt="IMU">
             </div>
-            <div class="w-[50%]">
+            <div class="w-[50%] flex justify-center">
               <img class="max-h-[10vh]" :src="getIMU('Y', 1)" alt="IMU">
             </div>
-            <div class="w-[50%]">
+            <div class="w-[50%] flex justify-center">
               <img class="max-h-[10vh]" :src="getIMU('Y', 2)" alt="IMU">
             </div>
-            <div class="w-[50%]">
+            <div class="w-[50%] flex justify-center">
               <img class="max-h-[10vh]" :src="getIMU('Z', 1)" alt="IMU">
             </div>
-            <div class="w-[50%]">
+            <div class="w-[50%] flex justify-center">
               <img class="max-h-[10vh]" :src="getIMU('Z', 2)" alt="IMU">
             </div>
           </div>
