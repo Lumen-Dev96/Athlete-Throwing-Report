@@ -10,6 +10,12 @@ This template should help get you started developing with Vue 3 in Vite.
 
 See [Vite Configuration Reference](https://vitejs.dev/config/).
 
+## Enviroment
+
+```
+node >= 20.1.0
+```
+
 ## Project Setup
 
 ```sh
@@ -26,6 +32,12 @@ npm run dev
 
 ```sh
 npm run build
+```
+
+### Import Data
+
+```
+/src/assets/ExcelProcess/Excel {id}/...
 ```
 
 ### Lint with [ESLint](https://eslint.org/)
