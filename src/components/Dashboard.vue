@@ -40,9 +40,9 @@ const angle4 = ref();
 const distance = ref();
 
 
-const getData = () => {
+const getData = (id) => {
   axios
-    .get('http://localhost:3000/data')
+    .get(`http://localhost:3000/data/${id}`)
     .then((response) => {
       console.log(response.data);
       testTime.value = response.data.testTime;
@@ -84,7 +84,7 @@ onMounted(() => {
 
   scatterVideo = document.getElementById('scatterVideo');
 
-  getData();
+  getData(currentResultId.value);
 
 });
 
@@ -103,6 +103,7 @@ function handleLastResultQuery(event) {
   nextResultBtnActive.value = false;
   lastResultBtnActive.value = true;
   _stopPlayVideos();
+  getData(currentResultId.value);
 }
 
 function _stopPlayVideos() {
@@ -130,6 +131,7 @@ function handleNextResultQuery(event) {
   lastResultBtnActive.value = false;
   lastResultBtnDisabled.value = false;
   _stopPlayVideos();
+  getData(currentResultId.value);
 }
 
 function handleSwitch3DSence(event) {
