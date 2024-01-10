@@ -31,3 +31,5 @@ coverage
 
 # Raw dataset
 src/assets/ExcelProcess
+
+public/models

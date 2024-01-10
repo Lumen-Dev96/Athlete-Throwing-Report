@@ -1,10 +1,10 @@
 <script setup>
 import { ClockCircleFilled, EnvironmentFilled, EyeFilled, PlaySquareFilled } from '@ant-design/icons-vue';
-import { ref, onMounted, onBeforeUnmount } from 'vue'
-import moment from 'moment'
+import { ref, onMounted, onBeforeUnmount } from 'vue';
 import IconAngle from './icons/IconAngle.vue';
 import util from '../util/utils';
-import { inject } from 'vue'
+import { inject } from 'vue';
+// import {fs} from 'fs';
 
 
 const axios = inject('axios');
@@ -54,6 +54,36 @@ const getData = (id) => {
       distance.value = response.data.distance;
 
     });
+  // fs.readFile(`../assets/ExcelProcess/Excel 1/information.txt`, 'utf8', function(err, data){
+  //   if(err){
+  //       return console.log('读取失败',err)
+  //   }
+  //   //转换成数组
+  //   const dataArray = data.split(/[(\r\n)\r\n]+/);
+  //   //删除空项
+  //   dataArray.forEach((item,index)=>{
+  //     if(!item){
+  //         snsArr.splice(index,1);
+  //     }
+  //   });
+  //   const response = {
+  //     testTime: dataArray[0],
+  //     isTargeted: dataArray[1].toLowerCase() === 'true',
+  //     angle1: dataArray[2],
+  //     angle2: dataArray[3],
+  //     angle3: dataArray[4],
+  //     angle4: dataArray[5],
+  //     distance: dataArray[6]
+  //   };
+  //   console.log(response);
+  //   testTime.value = response.testTime;
+  //   isTargeted.value = response.isTargeted;
+  //   angle1.value = response.angle1;
+  //   angle2.value = response.angle2;
+  //   angle3.value = response.angle3;
+  //   angle4.value = response.angle4;
+  //   distance.value = response.distance;
+  // });
 };
 
 let twoDSenceVideo1;
