@@ -25,11 +25,15 @@ const nextResultBtnDisabled = ref(false);
 
 const threeDSenceBtnActive = ref(true);
 const twoDSenceBtnActive = ref(false);
+const eyeBtnActive = ref(true);
+const cushionBtnActive = ref(true);
 
 const threeDSenceVideosIsPlaying = ref(false);
 const twoDSenceVideosIsPlaying = ref(false);
 const seatVideoIsPlaying = ref(false);
 const scatterVideoIsPlaying = ref(false);
+const eyeVideoIsPlaying = ref(false);
+const cushionVideoIsPlaying = ref(false);
 
 const testTime = ref();
 const isTargeted = ref();
@@ -94,6 +98,8 @@ let threeDSenceVideo3;
 let threeDSenceVideo4;
 let seatVideo;
 let scatterVideo;
+let eyeVideo;
+let cushionVideo;
 
 
 onMounted(() => {
@@ -103,7 +109,6 @@ onMounted(() => {
   }, 1000);
 
   twoDSenceVideo1 = document.getElementById('twoDSenceVideo1');
-  twoDSenceVideo2 = document.getElementById('twoDSenceVideo2');
 
   threeDSenceVideo1 = document.getElementById('threeDSenceVideo1');
   threeDSenceVideo2 = document.getElementById('threeDSenceVideo2');
@@ -111,6 +116,10 @@ onMounted(() => {
   threeDSenceVideo4 = document.getElementById('threeDSenceVideo4');
 
   seatVideo = document.getElementById('seatVideo');
+
+  eyeVideo = document.getElementById('eyeVideo');
+
+  cushionVideo = document.getElementById('cushionVideo');
 
   scatterVideo = document.getElementById('scatterVideo');
 
@@ -138,16 +147,19 @@ function handleLastResultQuery(event) {
 
 function _stopPlayVideos() {
   twoDSenceVideo1.pause();
-  twoDSenceVideo2.pause();
   threeDSenceVideo1.pause();
   threeDSenceVideo2.pause();
   threeDSenceVideo3.pause();
   threeDSenceVideo4.pause();
   scatterVideo.pause();
+  eyeVideo.pause();
+  cushionVideo.pause();
 
   twoDSenceVideosIsPlaying.value = false;
   threeDSenceVideosIsPlaying.value = false;
   scatterVideoIsPlaying.value = false;
+  eyeVideoIsPlaying.value = false;
+  cushionVideoIsPlaying.value = false;
 }
 
 function handleNextResultQuery(event) {
@@ -178,11 +190,9 @@ function handle2DSenceVideoPlay(event) {
   if (twoDSenceVideosIsPlaying.value) {
     twoDSenceVideosIsPlaying.value = false;
     twoDSenceVideo1.pause();
-    twoDSenceVideo2.pause();
   } else {
     twoDSenceVideosIsPlaying.value = true;
     twoDSenceVideo1.play();
-    twoDSenceVideo2.play();
   }
 }
 
@@ -212,6 +222,26 @@ function handleSeatVideoPlay(event) {
   }
 }
 
+function handleEyeVideoPlay(event) {
+  if (eyeVideoIsPlaying.value) {
+    eyeVideoIsPlaying.value = false;
+    eyeVideo.pause();
+  } else {
+    eyeVideoIsPlaying.value = true;
+    eyeVideo.play();
+  }
+}
+
+function handleCushionVideoPlay(event) {
+  if (cushionVideoIsPlaying.value) {
+    cushionVideoIsPlaying.value = false;
+    cushionVideo.pause();
+  } else {
+    cushionVideoIsPlaying.value = true;
+    cushionVideo.play();
+  }
+}
+
 function handleScatterVideoPlay(event) {
   if (scatterVideoIsPlaying.value) {
     scatterVideoIsPlaying.value = false;
@@ -227,13 +257,18 @@ function getIMU(direction, order) {
   return util.getAssetsFile(currentResultId.value, fileName);
 }
 
+function previewImage(url) {
+  let previewWindow = window.open()
+  previewWindow.document.write("<img style='object-fit:cover;width:100vh;height:100vh' src="+url+" />")
+}
+
 </script>
 
 <template>
-  <div class="bg-[#f6f6f6] w-full lg:h-[90vh]">
+  <div class="bg-[#f6f6f6] w-full h-[100%]">
     <div class="container mx-auto py-4">
-      <div class="lg:grid grid-rows-10 grid-cols-6 grid-flow-row gap-3">
-        <div class="p-3 bg-white row-span-1 col-span-1 shadow-sm">
+      <div class="lg:grid grid-rows-10 grid-cols-8 grid-flow-row gap-3">
+        <div class="p-3 bg-white row-span-1 col-span-2 shadow-sm">
           <div class="flex gap-2 items-center mb-1">
             <ClockCircleFilled />
             <span class="text-xs">測試時間</span>
@@ -242,7 +277,7 @@ function getIMU(direction, order) {
             {{ testTime }}
           </div>
         </div>
-        <div class="p-3 bg-white row-span-1 col-span-1 shadow-sm">
+        <div class="p-3 bg-white row-span-1 col-span-2 shadow-sm">
           <div class="flex gap-2 items-center mb-1">
             <EnvironmentFilled />
             <span class="text-xs">是否命中目標</span>
@@ -273,10 +308,10 @@ function getIMU(direction, order) {
           </div>
           <div v-show="threeDSenceBtnActive" class="relative cursor-pointer" @click="handle3DSenceVideoPlay">
             <div class="flex justify-center flex-wrap">
-              <video id="threeDSenceVideo1" class="max-h-[20vh] w-[50%]" muted :src="util.getAssetsFile(currentResultId, 'arm_body_1.mp4')"></video>
-              <video id="threeDSenceVideo2" class="max-h-[20vh] w-[50%]" muted :src="util.getAssetsFile(currentResultId, 'arm_body_2.mp4')"></video>
-              <video id="threeDSenceVideo3" class="max-h-[20vh] w-[50%]" muted :src="util.getAssetsFile(currentResultId, 'arm_body_3.mp4')"></video>
-              <video id="threeDSenceVideo4" class="max-h-[20vh] w-[50%]" muted :src="util.getAssetsFile(currentResultId, 'arm_body_4.mp4')"></video>
+              <video id="threeDSenceVideo1" class="max-h-[30vh] w-[50%]" muted :src="util.getAssetsFile(currentResultId, 'arm_body_1.mp4')"></video>
+              <video id="threeDSenceVideo2" class="max-h-[30vh] w-[50%]" muted :src="util.getAssetsFile(currentResultId, 'arm_body_2.mp4')"></video>
+              <video id="threeDSenceVideo3" class="max-h-[30vh] w-[50%]" muted :src="util.getAssetsFile(currentResultId, 'arm_body_3.mp4')"></video>
+              <video id="threeDSenceVideo4" class="max-h-[30vh] w-[50%]" muted :src="util.getAssetsFile(currentResultId, 'arm_body_4.mp4')"></video>
             </div>
             <div class="absolute -translate-y-1/2 -translate-x-1/2 top-1/2 left-1/2 text-5xl cursor-pointer flex text-white rounded-lg z-10">
               <PlaySquareFilled />
@@ -285,8 +320,7 @@ function getIMU(direction, order) {
           </div>
           <div v-show="twoDSenceBtnActive" class="relative cursor-pointer" @click="handle2DSenceVideoPlay">
             <div class="flex justify-center">
-              <video id="twoDSenceVideo1" class="max-h-[40vh] w-[50%]" muted src="@/assets/ExcelProcess/Excel 1/arm_body_1.mp4"></video>
-              <video id="twoDSenceVideo2" class="max-h-[40vh] w-[50%]" muted src="@/assets/ExcelProcess/Excel 1/arm_body_2.mp4"></video>
+              <video id="twoDSenceVideo1" class="" muted :src="util.getAssetsFile(currentResultId, 'far.mp4')"></video>
             </div>
             <div class="absolute -translate-y-1/2 -translate-x-1/2 top-1/2 left-1/2 text-5xl cursor-pointer flex text-white rounded-lg z-10">
               <PlaySquareFilled />
@@ -295,12 +329,12 @@ function getIMU(direction, order) {
           </div>
         </div>
 
-        <div class="p-3 bg-white row-span-5 col-span-2 shadow-sm">
+        <div class="p-3 bg-white row-span-5 col-span-4 shadow-sm">
           
           <div class="mb-3 flex justify-center">
-            <div class="relative cursor-pointer" @click="handleScatterVideoPlay">
-              <div class="flex justify-center">
-                <video id="scatterVideo" class="max-h-[40vh] w-[50%]" muted :src="util.getAssetsFile(currentResultId, '3d_scatter4.mp4')"></video>
+            <div class="relative cursor-pointer w-full" @click="handleScatterVideoPlay">
+              <div class="flex justify-center w-full h-[40vh] relative">
+                <video id="scatterVideo" class="w-full object-cover" muted :src="util.getAssetsFile(currentResultId, '3d_scatter4.mp4')"></video>
               </div>
               <div v-show="!scatterVideoIsPlaying" class="absolute -translate-y-1/2 -translate-x-1/2 top-1/2 left-1/2 text-3xl cursor-pointer flex text-white rounded-lg z-10">
                 <PlaySquareFilled />
@@ -378,7 +412,7 @@ function getIMU(direction, order) {
           <div class="font-bold text-center mb-2">眼動數據</div>
           <div class="flex justify-between">
             <div class="w-full flex justify-center flex-col">
-              <img class="max-h-[22vh]" :src="util.getAssetsFile(currentResultId, 'EyetrackerHeatmap.jpg')" alt="Eyes">
+              <img class="max-h-[22vh] cursor-pointer" @click="previewImage(util.getAssetsFile(currentResultId, 'EyetrackerHeatmap.jpg'))" :src="util.getAssetsFile(currentResultId, 'EyetrackerHeatmap.jpg')" alt="Eyes">
               <div class="bg-[#efefef] p-1">
                 <div class="font-bold mt-1 mb-2">HEATMAP</div>
                 <div class="text-xs">內容內容內容內容內容內容內容內容內容內容內容內容內容內容內容內容內容內容內容內容內容內容內容內容</div>
@@ -394,7 +428,7 @@ function getIMU(direction, order) {
           </div>
 
         </div>
-        <div class="p-3 bg-white row-span-3 col-span-1 shadow-sm">
+        <div class="p-3 bg-white row-span-3 col-span-2 shadow-sm">
           <div class="font-bold text-center mb-2">坐墊</div>
           <div class="flex justify-center flex-col">
             <!-- <div class="relative cursor-pointer" @click="handleSeatVideoPlay">
@@ -404,19 +438,19 @@ function getIMU(direction, order) {
               <div v-show="!seatVideoIsPlaying" class="absolute top-0 w-full h-full bg-black/[0.5]"></div>
               <video id="seatVideo" src="@/assets/2/arm_body_2.mp4"></video>
             </div> -->
-            <img :src="util.getAssetsFile(currentResultId, '1th_Line_graph.png')" alt="San">
+            <img class="cursor-pointer" @click="previewImage(util.getAssetsFile(currentResultId, '1th_Line_graph.png'))" :src="util.getAssetsFile(currentResultId, '1th_Line_graph.png')" alt="San">
             <div class="bg-[#efefef] p-1">
               <div class="text-xs">內容內容內容內容內容內容內容內容內容內容內容內容內容內容內容內容內容內容內容內容內容內容內容內容</div>
             </div>
           </div>
         </div>
-        <div class="p-3 bg-white row-span-3 col-span-3 shadow-sm">
+        <div class="p-3 bg-white row-span-3 col-span-4 shadow-sm">
           <div class="font-bold text-center mb-2">IMU</div>
           <div class="flex justify-center flex-wrap">
-            <div class="w-[50%] flex justify-center">
-              <img class="max-h-[10vh]" :src="getIMU('X', 1)" alt="IMU">
+            <div class="w-full flex justify-center" @click="previewImage(util.getAssetsFile(currentResultId, 'IMU.jpg'))">
+              <img class="h-[40vh] object-cover" :src="util.getAssetsFile(currentResultId, 'IMU.jpg')" alt="IMU">
             </div>
-            <div class="w-[50%] flex justify-center">
+            <!-- <div class="w-[50%] flex justify-center">
               <img class="max-h-[10vh]" :src="getIMU('X', 2)" alt="IMU">
             </div>
             <div class="w-[50%] flex justify-center">
@@ -430,6 +464,36 @@ function getIMU(direction, order) {
             </div>
             <div class="w-[50%] flex justify-center">
               <img class="max-h-[10vh]" :src="getIMU('Z', 2)" alt="IMU">
+            </div> -->
+          </div>
+        </div>
+
+        <div class="p-3 bg-white row-span-3 col-span-4 shadow-sm">
+          <div class="font-bold text-center mb-2">Eye</div>
+          <div class="flex justify-center flex-wrap">
+            <div class="relative cursor-pointer w-full" @click="handleEyeVideoPlay">
+              <div class="flex justify-center">
+                <video id="eyeVideo" class="" muted :src="util.getAssetsFile(currentResultId, 'eye.mp4')"></video>
+              </div>
+              <div v-show="!eyeVideoIsPlaying" class="absolute -translate-y-1/2 -translate-x-1/2 top-1/2 left-1/2 text-5xl cursor-pointer flex text-white rounded-lg z-10">
+                <PlaySquareFilled />
+              </div>
+              <div v-show="!eyeVideoIsPlaying" class="absolute top-0 w-full h-full bg-black/[0.5]"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="p-3 bg-white row-span-3 col-span-4 shadow-sm">
+          <div class="font-bold text-center mb-2">Cushion</div>
+          <div class="flex justify-center flex-wrap">
+            <div class="relative cursor-pointer w-full" @click="handleCushionVideoPlay">
+              <div class="flex justify-center">
+                <video id="cushionVideo" class="" muted :src="util.getAssetsFile(currentResultId, 'Cushion.mp4')"></video>
+              </div>
+              <div v-show="!cushionVideoIsPlaying" class="absolute -translate-y-1/2 -translate-x-1/2 top-1/2 left-1/2 text-5xl cursor-pointer flex text-white rounded-lg z-10">
+                <PlaySquareFilled />
+              </div>
+              <div v-show="!cushionVideoIsPlaying" class="absolute top-0 w-full h-full bg-black/[0.5]"></div>
             </div>
           </div>
         </div>
