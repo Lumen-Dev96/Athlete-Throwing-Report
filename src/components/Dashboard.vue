@@ -322,7 +322,7 @@ function previewImage(url) {
             <div class="flex justify-center">
               <video id="twoDSenceVideo1" class="" muted :src="util.getAssetsFile(currentResultId, 'far.mp4')"></video>
             </div>
-            <div class="absolute -translate-y-1/2 -translate-x-1/2 top-1/2 left-1/2 text-5xl cursor-pointer flex text-white rounded-lg z-10">
+            <div v-show="!twoDSenceVideosIsPlaying" class="absolute -translate-y-1/2 -translate-x-1/2 top-1/2 left-1/2 text-5xl cursor-pointer flex text-white rounded-lg z-10">
               <PlaySquareFilled />
             </div>
             <div v-show="!twoDSenceVideosIsPlaying" class="absolute top-0 w-full h-full bg-black/[0.5]"></div>
