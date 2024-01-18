@@ -82,7 +82,7 @@ export default {
     // 外部模型加载函数
     loadObj () {
       // for (let i = 0; i < 14; i++) {
-        new GLTFLoader().load(`/public/models/120605.gltf`, mesh => {
+        new GLTFLoader().load(`/public/models/240118_1st.gltf`, mesh => {
 
           console.log(mesh)
 
