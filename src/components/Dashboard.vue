@@ -42,6 +42,18 @@ const angle2 = ref();
 const angle3 = ref();
 const angle4 = ref();
 const distance = ref();
+const radian = ref();
+
+const athletesData = ref();
+
+const measure = ref(['距離', '球速', '命中率' , '角度1', '角度2', '角度3', '角度4', '弧度']);
+
+let compareAthlete = ref();
+
+let athletesCompareTable1 = ref([]);
+
+let compareAthleteOptions = ref([]);
+
 
 
 const getData = (id) => {
@@ -56,6 +68,41 @@ const getData = (id) => {
       angle3.value = response.data.angle3;
       angle4.value = response.data.angle4;
       distance.value = response.data.distance;
+
+      athletesCompareTable1 = [
+        {
+          'measure': '距離',
+          'current': distance.value
+        },
+        {
+          'measure': '球速',
+          'current': distance.value
+        },
+        {
+          'measure': '命中率',
+          'current': isTargeted.value
+        },
+        {
+          'measure': '角度1',
+          'current': angle1.value
+        },
+        {
+          'measure': '角度2',
+          'current': angle2.value
+        },
+        {
+          'measure': '角度3',
+          'current': angle3.value
+        },
+        {
+          'measure': '角度4',
+          'current': angle4.value
+        },
+        {
+          'measure': '弧度',
+          'current': distance.value
+        }
+      ];
 
     });
   // fs.readFile(`../assets/ExcelProcess/Excel 1/information.txt`, 'utf8', function(err, data){
@@ -88,6 +135,33 @@ const getData = (id) => {
   //   angle4.value = response.angle4;
   //   distance.value = response.distance;
   // });
+};
+
+const getAthletes = () => {
+  axios
+    .get(`http://localhost:3000/athletes`)
+    .then((response) => {
+      console.log(response.data);
+      athletesData.value = response.data
+
+      for (let akey in athletesData.value) {
+        compareAthleteOptions.value.push(
+          {
+            value: akey,
+            label: akey,
+            children: athletesData.value[akey].filter((item) => item[0] !== undefined).map((item) => {
+              return {
+                value: item[0],
+                label: item[0] + 'M'
+              }
+            })
+          }
+        );
+      }
+
+
+
+    });
 };
 
 let twoDSenceVideo1;
@@ -124,6 +198,8 @@ onMounted(() => {
   scatterVideo = document.getElementById('scatterVideo');
 
   getData(currentResultId.value);
+
+  getAthletes();
 
 });
 
@@ -495,6 +571,22 @@ function previewImage(url) {
               </div>
               <div v-show="!cushionVideoIsPlaying" class="absolute top-0 w-full h-full bg-black/[0.5]"></div>
             </div>
+          </div>
+        </div>
+
+        <div class="p-3 bg-white row-span-3 col-span-8 shadow-sm">
+          <div class="font-bold text-center mb-2">運動員數據對比</div>
+          <div class="flex justify-center flex-wrap">
+            <el-table :data="athletesCompareTable1" border style="width: 100%">
+              <el-table-column prop="current" label="本次投球數據" min-width="33%" />
+              <el-table-column prop="measure" label="指標" min-width="33%" />
+              <el-table-column prop="athlete" label="請選擇對比運動員" min-width="33%">
+                <template #header>
+                  
+                  <el-cascader v-model="compareAthlete" :options="compareAthleteOptions" @change="handleCompareAthleteChange" />
+                </template>
+              </el-table-column>
+            </el-table>
           </div>
         </div>
 
