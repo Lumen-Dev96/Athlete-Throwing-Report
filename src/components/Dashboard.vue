@@ -25,8 +25,8 @@ const nextResultBtnDisabled = ref(false);
 
 const threeDSenceBtnActive = ref(true);
 const twoDSenceBtnActive = ref(false);
-const eyeBtnActive = ref(true);
-const cushionBtnActive = ref(true);
+const currentCompareBtnActive = ref(true);
+const customCompareBtnActive = ref(false);
 
 const threeDSenceVideosIsPlaying = ref(false);
 const twoDSenceVideosIsPlaying = ref(false);
@@ -46,14 +46,25 @@ const radian = ref();
 
 const athletesData = ref();
 
-const measure = ref(['距離', '球速', '命中率' , '角度1', '角度2', '角度3', '角度4', '弧度']);
-
-let compareAthlete = ref();
-
 let athletesCompareTable1 = ref([]);
+let compareAthlete1 = ref();
+
+let athletesCompareTable2 = ref([]);
+let compareAthlete2 = ref();
+let compareAthlete3 = ref();
 
 let compareAthleteOptions = ref([]);
 
+let twoDSenceVideo1;
+let twoDSenceVideo2;
+let threeDSenceVideo1;
+let threeDSenceVideo2;
+let threeDSenceVideo3;
+let threeDSenceVideo4;
+let seatVideo;
+let scatterVideo;
+let eyeVideo;
+let cushionVideo;
 
 
 const getData = (id) => {
@@ -69,7 +80,7 @@ const getData = (id) => {
       angle4.value = response.data.angle4;
       distance.value = response.data.distance;
 
-      athletesCompareTable1 = [
+      athletesCompareTable1.value = [
         {
           'measure': '距離',
           'current': distance.value
@@ -101,6 +112,33 @@ const getData = (id) => {
         {
           'measure': '弧度',
           'current': distance.value
+        }
+      ];
+
+      athletesCompareTable2.value = [
+      {
+          'measure': '距離',
+        },
+        {
+          'measure': '球速',
+        },
+        {
+          'measure': '命中率',
+        },
+        {
+          'measure': '角度1',
+        },
+        {
+          'measure': '角度2',
+        },
+        {
+          'measure': '角度3',
+        },
+        {
+          'measure': '角度4',
+        },
+        {
+          'measure': '弧度',
         }
       ];
 
@@ -163,17 +201,6 @@ const getAthletes = () => {
 
     });
 };
-
-let twoDSenceVideo1;
-let twoDSenceVideo2;
-let threeDSenceVideo1;
-let threeDSenceVideo2;
-let threeDSenceVideo3;
-let threeDSenceVideo4;
-let seatVideo;
-let scatterVideo;
-let eyeVideo;
-let cushionVideo;
 
 
 onMounted(() => {
@@ -336,6 +363,64 @@ function getIMU(direction, order) {
 function previewImage(url) {
   let previewWindow = window.open()
   previewWindow.document.write("<img style='object-fit:cover;width:100vh;height:100vh' src="+url+" />")
+}
+
+function handleCompareAthlete1Change(value) {
+  const athleteId = value[0]
+  const keyDistance = value[1]
+
+  if (athletesData.value[athleteId]) {
+    const targetAthlete = athletesData.value[athleteId].find((data) => data[0] === keyDistance);
+    if (targetAthlete) {
+      targetAthlete.forEach((value, i) => {
+        athletesCompareTable1.value[i]['athlete'] = value;
+      })
+    } else {
+      console.log('No Athlete Data')
+    }
+  }
+}
+
+function handleCompareAthlete2Change(value) {
+  const athleteId = value[0]
+  const keyDistance = value[1]
+
+  if (athletesData.value[athleteId]) {
+    const targetAthlete = athletesData.value[athleteId].find((data) => data[0] === keyDistance);
+    if (targetAthlete) {
+      targetAthlete.forEach((value, i) => {
+        athletesCompareTable2.value[i]['athlete1'] = value;
+      })
+    } else {
+      console.log('No Athlete Data')
+    }
+  }
+}
+
+function handleCompareAthlete3Change(value) {
+  const athleteId = value[0]
+  const keyDistance = value[1]
+
+  if (athletesData.value[athleteId]) {
+    const targetAthlete = athletesData.value[athleteId].find((data) => data[0] === keyDistance);
+    if (targetAthlete) {
+      targetAthlete.forEach((value, i) => {
+        athletesCompareTable2.value[i]['athlete2'] = value;
+      })
+    } else {
+      console.log('No Athlete Data')
+    }
+  }
+}
+
+function handleSwitchCurrentCompare(event) {
+  currentCompareBtnActive.value = true;
+  customCompareBtnActive.value = false;
+}
+
+function handleSwitchCustomCompare(event) {
+  currentCompareBtnActive.value = false;
+  customCompareBtnActive.value = true;
 }
 
 </script>
@@ -576,14 +661,44 @@ function previewImage(url) {
 
         <div class="p-3 bg-white row-span-3 col-span-8 shadow-sm">
           <div class="font-bold text-center mb-2">運動員數據對比</div>
-          <div class="flex justify-center flex-wrap">
+          <div class="flex mx-auto justify-center gap-8 my-2">
+            <div
+              class="text-center text-[#a0a0a0] rounded-full px-2 py-0.5 cursor-pointer sence-btn"
+              :class="{ active: currentCompareBtnActive }"
+              @click="handleSwitchCurrentCompare"
+            >
+              • 本次投球對比
+            </div>
+            <div
+              class="text-center text-[#a0a0a0] rounded-full px-2 py-0.5 cursor-pointer sence-btn"
+              :class="{ active: customCompareBtnActive }"
+              @click="handleSwitchCustomCompare"
+            >
+              • 自定義數據對比
+            </div>
+          </div>
+          <div v-show="currentCompareBtnActive" class="flex justify-center flex-wrap mt-3">
             <el-table :data="athletesCompareTable1" border style="width: 100%">
               <el-table-column prop="current" label="本次投球數據" min-width="33%" />
               <el-table-column prop="measure" label="指標" min-width="33%" />
               <el-table-column prop="athlete" label="請選擇對比運動員" min-width="33%">
                 <template #header>
-                  
-                  <el-cascader v-model="compareAthlete" :options="compareAthleteOptions" @change="handleCompareAthleteChange" />
+                  <el-cascader placeholder="請選擇運動員數據" v-model="compareAthlete1" :options="compareAthleteOptions" @change="handleCompareAthlete1Change" />
+                </template>
+              </el-table-column>
+            </el-table>
+          </div>
+          <div v-show="customCompareBtnActive" class="flex justify-center flex-wrap mt-3">
+            <el-table :data="athletesCompareTable2" border style="width: 100%">
+              <el-table-column prop="athlete1" label="請選擇對比運動員" min-width="33%">
+                <template #header>
+                  <el-cascader placeholder="請選擇運動員數據" v-model="compareAthlete2" :options="compareAthleteOptions" @change="handleCompareAthlete2Change" />
+                </template>
+              </el-table-column>
+              <el-table-column prop="measure" label="指標" min-width="33%" />
+              <el-table-column prop="athlete2" label="請選擇對比運動員" min-width="33%">
+                <template #header>
+                  <el-cascader placeholder="請選擇運動員數據" v-model="compareAthlete3" :options="compareAthleteOptions" @change="handleCompareAthlete3Change" />
                 </template>
               </el-table-column>
             </el-table>
