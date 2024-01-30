@@ -82,63 +82,63 @@ const getData = (id) => {
 
       athletesCompareTable1.value = [
         {
-          'measure': '距離',
+          'measure': '距離(M)',
           'current': distance.value
         },
         {
-          'measure': '球速',
+          'measure': '球速(M/s)',
           'current': distance.value
         },
         {
-          'measure': '命中率',
+          'measure': '命中率(%)',
           'current': isTargeted.value
         },
         {
-          'measure': '角度1',
+          'measure': '角度1(°)',
           'current': angle1.value
         },
         {
-          'measure': '角度2',
+          'measure': '角度2(°)',
           'current': angle2.value
         },
         {
-          'measure': '角度3',
+          'measure': '角度3(°)',
           'current': angle3.value
         },
         {
-          'measure': '角度4',
+          'measure': '角度4(°)',
           'current': angle4.value
         },
         {
-          'measure': '弧度',
+          'measure': '弧度(°)',
           'current': distance.value
         }
       ];
 
       athletesCompareTable2.value = [
       {
-          'measure': '距離',
+          'measure': '距離(M)',
         },
         {
-          'measure': '球速',
+          'measure': '球速(M/s)',
         },
         {
-          'measure': '命中率',
+          'measure': '命中率(%)',
         },
         {
-          'measure': '角度1',
+          'measure': '角度1(°)',
         },
         {
-          'measure': '角度2',
+          'measure': '角度2(°)',
         },
         {
-          'measure': '角度3',
+          'measure': '角度3(°)',
         },
         {
-          'measure': '角度4',
+          'measure': '角度4(°)',
         },
         {
-          'measure': '弧度',
+          'measure': '弧度(°)',
         }
       ];
 
