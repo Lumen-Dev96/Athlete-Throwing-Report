@@ -30,7 +30,7 @@ const customCompareBtnActive = ref(false);
 
 const threeDSenceVideosIsPlaying = ref(false);
 const twoDSenceVideosIsPlaying = ref(false);
-const seatVideoIsPlaying = ref(false);
+const commonVideosIsPlaying = ref(false);
 const scatterVideoIsPlaying = ref(false);
 const eyeVideoIsPlaying = ref(false);
 const cushionVideoIsPlaying = ref(false);
@@ -263,6 +263,7 @@ function _stopPlayVideos() {
   scatterVideoIsPlaying.value = false;
   eyeVideoIsPlaying.value = false;
   cushionVideoIsPlaying.value = false;
+  commonVideosIsPlaying.value = false;
 }
 
 function handleNextResultQuery(event) {
@@ -315,13 +316,27 @@ function handle3DSenceVideoPlay(event) {
   }
 }
 
-function handleSeatVideoPlay(event) {
-  if (seatVideoIsPlaying.value) {
-    seatVideoIsPlaying.value = false;
-    seatVideo.pause();
+function handleCommonVideosPlay(event) {
+  if (commonVideosIsPlaying.value) {
+    commonVideosIsPlaying.value = false;
+    threeDSenceVideo1.pause();
+    threeDSenceVideo2.pause();
+    threeDSenceVideo3.pause();
+    threeDSenceVideo4.pause();
+
+    twoDSenceVideo1.pause();
+
+    scatterVideo.pause();
   } else {
-    seatVideoIsPlaying.value = true;
-    seatVideo.play();
+    commonVideosIsPlaying.value = true;
+    threeDSenceVideo1.play();
+    threeDSenceVideo2.play();
+    threeDSenceVideo3.play();
+    threeDSenceVideo4.play();
+
+    twoDSenceVideo1.play();
+
+    scatterVideo.play();
   }
 }
 
@@ -467,7 +482,7 @@ function handleSwitchCustomCompare(event) {
               • 二維場景
             </div>
           </div>
-          <div v-show="threeDSenceBtnActive" class="relative cursor-pointer" @click="handle3DSenceVideoPlay">
+          <div v-show="threeDSenceBtnActive" class="relative cursor-pointer" @click="handleCommonVideosPlay">
             <div class="flex justify-center flex-wrap">
               <video id="threeDSenceVideo1" class="max-h-[30vh] w-[50%]" muted :src="util.getAssetsFile(currentResultId, 'arm_body_1.mp4')"></video>
               <video id="threeDSenceVideo2" class="max-h-[30vh] w-[50%]" muted :src="util.getAssetsFile(currentResultId, 'arm_body_2.mp4')"></video>
@@ -477,30 +492,30 @@ function handleSwitchCustomCompare(event) {
             <div class="absolute -translate-y-1/2 -translate-x-1/2 top-1/2 left-1/2 text-5xl cursor-pointer flex text-white rounded-lg z-10">
               <PlaySquareFilled />
             </div>
-            <div v-show="!threeDSenceVideosIsPlaying" class="absolute top-0 w-full h-full bg-black/[0.5]"></div>
+            <div v-show="!commonVideosIsPlaying" class="absolute top-0 w-full h-full bg-black/[0.5]"></div>
           </div>
-          <div v-show="twoDSenceBtnActive" class="relative cursor-pointer" @click="handle2DSenceVideoPlay">
+          <div v-show="twoDSenceBtnActive" class="relative cursor-pointer" @click="handleCommonVideosPlay">
             <div class="flex justify-center">
               <video id="twoDSenceVideo1" class="" muted :src="util.getAssetsFile(currentResultId, 'far.mp4')"></video>
             </div>
-            <div v-show="!twoDSenceVideosIsPlaying" class="absolute -translate-y-1/2 -translate-x-1/2 top-1/2 left-1/2 text-5xl cursor-pointer flex text-white rounded-lg z-10">
+            <div v-show="!commonVideosIsPlaying" class="absolute -translate-y-1/2 -translate-x-1/2 top-1/2 left-1/2 text-5xl cursor-pointer flex text-white rounded-lg z-10">
               <PlaySquareFilled />
             </div>
-            <div v-show="!twoDSenceVideosIsPlaying" class="absolute top-0 w-full h-full bg-black/[0.5]"></div>
+            <div v-show="!commonVideosIsPlaying" class="absolute top-0 w-full h-full bg-black/[0.5]"></div>
           </div>
         </div>
 
         <div class="p-3 bg-white row-span-5 col-span-4 shadow-sm">
           
           <div class="mb-3 flex justify-center">
-            <div class="relative cursor-pointer w-full" @click="handleScatterVideoPlay">
+            <div class="relative cursor-pointer w-full" @click="handleCommonVideosPlay">
               <div class="flex justify-center w-full h-[40vh] relative">
                 <video id="scatterVideo" class="w-full object-cover" muted :src="util.getAssetsFile(currentResultId, '3d_scatter4.mp4')"></video>
               </div>
-              <div v-show="!scatterVideoIsPlaying" class="absolute -translate-y-1/2 -translate-x-1/2 top-1/2 left-1/2 text-3xl cursor-pointer flex text-white rounded-lg z-10">
+              <div v-show="!commonVideosIsPlaying" class="absolute -translate-y-1/2 -translate-x-1/2 top-1/2 left-1/2 text-3xl cursor-pointer flex text-white rounded-lg z-10">
                 <PlaySquareFilled />
               </div>
-              <div v-show="!scatterVideoIsPlaying" class="absolute top-0 w-full h-full bg-black/[0.5]"></div>
+              <div v-show="!commonVideosIsPlaying" class="absolute top-0 w-full h-full bg-black/[0.5]"></div>
             </div>
           </div>
           <div class="flex justify-between">
@@ -596,7 +611,7 @@ function handleSwitchCustomCompare(event) {
               <div class="absolute -translate-y-1/2 -translate-x-1/2 top-1/2 left-1/2 text-3xl flex text-white rounded-lg z-10">
                 <PlaySquareFilled />
               </div>
-              <div v-show="!seatVideoIsPlaying" class="absolute top-0 w-full h-full bg-black/[0.5]"></div>
+              <div v-show="!commonVideosIsPlaying" class="absolute top-0 w-full h-full bg-black/[0.5]"></div>
               <video id="seatVideo" src="@/assets/2/arm_body_2.mp4"></video>
             </div> -->
             <img class="cursor-pointer" @click="previewImage(util.getAssetsFile(currentResultId, '1th_Line_graph.png'))" :src="util.getAssetsFile(currentResultId, '1th_Line_graph.png')" alt="San">
