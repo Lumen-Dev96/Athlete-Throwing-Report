@@ -30,6 +30,7 @@ pnpm-lock.yaml
 yarn.lock
 
 # Raw dataset
-# src/assets/ExcelProcess/
+src/assets/ExcelProcess/
 
-# public/models
+# Blender 3D models
+public/models
