@@ -1,49 +1,83 @@
-<script setup lang="ts">
-import HelloWorld from './components/HelloWorld.vue'
+<script setup>
 </script>
 
 <template>
-  <div>
-    <a href="https://www.electronjs.org/" target="_blank">
-      <img src="./assets/electron.svg" class="logo electron" alt="Electron logo" />
-    </a>
-    <a href="https://vitejs.dev/" target="_blank">
-      <img src="./assets/vite.svg" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://vuejs.org/" target="_blank">
-      <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
-    </a>
-  </div>
-  <HelloWorld msg="Electron + Vite + Vue" />
-  <div class="flex-center">
-    Place static files into the <code>/public</code> folder
-    <img style="width: 2.4em; margin-left: .4em;" src="/logo.svg" alt="Logo">
-  </div>
+  <header>
+    <img alt="logo1" class="logo" src="@/assets/logo.jpeg" width="80" height="80" />
+
+    <img alt="logo2" class="logo" src="@/assets/logo2.jpeg" width="80" height="90" />
+
+    <div class="wrapper">
+
+      
+    </div>
+  </header>
+
+  <router-view></router-view>
 </template>
 
-<style>
-.flex-center {
+<style scoped>
+header {
   display: flex;
-  align-items: center;
-  justify-content: center;
+  place-items: center;
+  padding-right: calc(var(--section-gap) / 2);
+  padding-left: calc(var(--section-gap) / 2);
+  line-height: 1.5;
+  max-height: 10vh;
+  height: 10vh;
+  box-shadow:
+  0px 0.3px 0.5px rgba(0, 0, 0, 0.01),
+  0px 0.8px 1.5px rgba(0, 0, 0, 0.015),
+  0px 1.8px 3.6px rgba(0, 0, 0, 0.02),
+  0px 6px 12px rgba(0, 0, 0, 0.03)
+;
 }
 
 .logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
+  display: block;
+  margin: 0 2rem 0 0;
 }
 
-.logo.electron:hover {
-  filter: drop-shadow(0 0 2em #9FEAF9);
+nav {
+  width: 100%;
+  font-size: 12px;
+  text-align: center;
+  margin-top: 2rem;
 }
 
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
+nav a.router-link-exact-active {
+  color: var(--color-text);
 }
 
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
+nav a.router-link-exact-active:hover {
+  background-color: transparent;
+}
+
+nav a {
+  display: inline-block;
+  padding: 0 1rem;
+  border-left: 1px solid var(--color-border);
+}
+
+nav a:first-of-type {
+  border: 0;
+}
+
+@media (min-width: 1024px) {
+
+  header .wrapper {
+    display: flex;
+    place-items: flex-start;
+    flex-wrap: wrap;
+  }
+
+  nav {
+    text-align: left;
+    margin-left: -1rem;
+    font-size: 1rem;
+
+    padding: 1rem 0;
+    margin-top: 1rem;
+  }
 }
 </style>
