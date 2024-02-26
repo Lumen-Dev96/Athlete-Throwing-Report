@@ -46,10 +46,16 @@ const indexHtml = join(process.env.DIST, 'index.html')
 
 async function createWindow() {
   win = new BrowserWindow({
-    title: 'Main window',
+    title: 'Athlete Throwing Data Analysis',
     icon: join(process.env.VITE_PUBLIC, 'favicon.ico'),
+    width: 1440,
+    height: 768,
+    fullscreenable: true,
     webPreferences: {
       preload,
+      defaultFontFamily:{
+        standard: "Times New Roman"
+      },
       // Warning: Enable nodeIntegration and disable contextIsolation is not secure in production
       // nodeIntegration: true,
 
