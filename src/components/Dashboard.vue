@@ -4,7 +4,6 @@ import { ref, onMounted, onBeforeUnmount } from 'vue';
 import IconAngle from './icons/IconAngle.vue';
 import util from '../util/utils';
 import { inject } from 'vue';
-// import {fs} from 'fs';
 
 
 const axios = inject('axios');
@@ -377,7 +376,7 @@ function getIMU(direction, order) {
 
 function previewImage(url) {
   let previewWindow = window.open()
-  previewWindow.document.write("<img style='object-fit:cover;width:100vh;height:100vh' src="+url+" />")
+  previewWindow.document.write("<img style='object-fit:cover;height:100vh;' src="+url+" />")
 }
 
 function handleCompareAthlete1Change(value) {
@@ -523,21 +522,21 @@ function handleSwitchCustomCompare(event) {
             <div class="w-full flex justify-between gap-3">
               <div class="flex w-[33%] h-full flex-col justify-around items-center">
                 <div class="w-full text-xs text-center">
-                  <div class="whitespace-nowrap">大臂與小臂的角度</div>
+                  <div class="whitespace-nowrap cursor-pointer" @click="previewImage(util.getDescriptionFile('d1.jpg'))">大臂與小臂的角度</div>
                   <div class="bg-[#efefef] p-1 w-full flex justify-center gap-1 items-center">
                     <IconAngle />
                     <span class="text-center font-bold">{{ angle1 }}°</span>
                   </div>
                 </div>
                 <div class="w-full text-xs text-center">
-                  <div>大臂與軀幹冠狀面</div>
+                  <div class="cursor-pointer" @click="previewImage(util.getDescriptionFile('d3.jpg'))">大臂與軀幹冠狀面</div>
                   <div class="bg-[#efefef] p-1 w-full flex justify-center gap-1 items-center">
                     <IconAngle />
                     <span class="text-center font-bold">{{ angle2 }}°</span>
                   </div>
                 </div>
                 <div class="w-full text-xs text-center">
-                  <div>大臂與軀幹矢狀面</div>
+                  <div class="cursor-pointer" @click="previewImage(util.getDescriptionFile('d2.jpg'))">大臂與軀幹矢狀面</div>
                   <div class="bg-[#efefef] p-1 w-full flex justify-center gap-1 items-center">
                     <IconAngle />
                     <span class="text-center font-bold">{{ angle3 }}°</span>
@@ -546,7 +545,7 @@ function handleSwitchCustomCompare(event) {
               </div>
               <div class="flex w-[33%] h-full flex-col justify-around items-center">
                 <div class="w-full text-xs text-center">
-                  <div class="whitespace-nowrap">軀幹與大腿的角度</div>
+                  <div class="whitespace-nowrap cursor-pointer" @click="previewImage(util.getDescriptionFile('d4.jpg'))">軀幹與大腿的角度</div>
                   <div class="bg-[#efefef] p-1 w-full flex justify-center gap-1 items-center">
                     <IconAngle />
                     <span class="text-center font-bold">{{ angle4 }}°</span>
