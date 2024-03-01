@@ -20,12 +20,14 @@ const routes = [
       component: BlenderView2
     },
     {
-      path: '/about',
-      name: 'about',
+      path: '/description',
+      name: 'description',
       // route level code-splitting
       // this generates a separate chunk (About.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
-      component: () => import('../views/AboutView.vue')
+      // component: BlenderView2
+
+      component: () => import('../views/DescriptionView.vue')
     }
   ]
 

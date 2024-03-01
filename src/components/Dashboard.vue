@@ -1,12 +1,15 @@
 <script setup>
-import { ClockCircleFilled, EnvironmentFilled, EyeFilled, PlaySquareFilled } from '@ant-design/icons-vue';
+import { ClockCircleFilled, EnvironmentFilled, EyeFilled, InfoCircleOutlined, PlaySquareFilled } from '@ant-design/icons-vue';
 import { ref, onMounted, onBeforeUnmount } from 'vue';
 import IconAngle from './icons/IconAngle.vue';
 import util from '../util/utils';
 import { inject } from 'vue';
+import { useRouter } from 'vue-router';
 
 
 const axios = inject('axios');
+
+const router = useRouter();
 
 const time = ref();
 // 获取当前时间
@@ -437,6 +440,14 @@ function handleSwitchCustomCompare(event) {
   customCompareBtnActive.value = true;
 }
 
+function redirectToDescription(event) {
+  const href = router.resolve({
+      name:'description',
+      path: '/description',
+  })
+  window.open(href.href, '_blank')
+}
+
 </script>
 
 <template>
@@ -522,21 +533,30 @@ function handleSwitchCustomCompare(event) {
             <div class="w-full flex justify-between gap-3">
               <div class="flex w-[33%] h-full flex-col justify-around items-center">
                 <div class="w-full text-xs text-center">
-                  <div class="whitespace-nowrap cursor-pointer" @click="previewImage(util.getDescriptionFile('d1.jpg'))">大臂與小臂的角度</div>
+                  <div class="flex items-center justify-center gap-1">
+                    <div>大臂與小臂的角度</div>
+                    <InfoCircleOutlined @click="redirectToDescription" />
+                  </div>
                   <div class="bg-[#efefef] p-1 w-full flex justify-center gap-1 items-center">
                     <IconAngle />
                     <span class="text-center font-bold">{{ angle1 }}°</span>
                   </div>
                 </div>
                 <div class="w-full text-xs text-center">
-                  <div class="cursor-pointer" @click="previewImage(util.getDescriptionFile('d3.jpg'))">大臂與軀幹冠狀面</div>
+                  <div class="flex items-center justify-center gap-1">
+                    <div>大臂與軀幹冠狀面</div>
+                    <InfoCircleOutlined @click="redirectToDescription" />
+                  </div>
                   <div class="bg-[#efefef] p-1 w-full flex justify-center gap-1 items-center">
                     <IconAngle />
                     <span class="text-center font-bold">{{ angle2 }}°</span>
                   </div>
                 </div>
                 <div class="w-full text-xs text-center">
-                  <div class="cursor-pointer" @click="previewImage(util.getDescriptionFile('d2.jpg'))">大臂與軀幹矢狀面</div>
+                  <div class="flex items-center justify-center gap-1">
+                    <div>大臂與軀幹矢狀面</div>
+                    <InfoCircleOutlined @click="redirectToDescription" />
+                  </div>
                   <div class="bg-[#efefef] p-1 w-full flex justify-center gap-1 items-center">
                     <IconAngle />
                     <span class="text-center font-bold">{{ angle3 }}°</span>
@@ -545,7 +565,10 @@ function handleSwitchCustomCompare(event) {
               </div>
               <div class="flex w-[33%] h-full flex-col justify-around items-center">
                 <div class="w-full text-xs text-center">
-                  <div class="whitespace-nowrap cursor-pointer" @click="previewImage(util.getDescriptionFile('d4.jpg'))">軀幹與大腿的角度</div>
+                  <div class="flex items-center justify-center gap-1">
+                    <div>軀幹與大腿的角度</div>
+                    <InfoCircleOutlined @click="redirectToDescription" />
+                  </div>
                   <div class="bg-[#efefef] p-1 w-full flex justify-center gap-1 items-center">
                     <IconAngle />
                     <span class="text-center font-bold">{{ angle4 }}°</span>
